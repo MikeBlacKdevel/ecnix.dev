@@ -121,7 +121,7 @@ export default function ProvidersTab() {
       <div className="flex mb-4">
         <input
           type="text"
-          placeholder="Search providers..."
+          placeholder="Buscar proveedores..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
@@ -134,10 +134,9 @@ export default function ProvidersTab() {
       {/* URL Configurable Providers Section */}
       {urlConfigurableProviders.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-2 text-bolt-elements-textPrimary">Experimental Providers</h3>
+          <h3 className="text-lg font-semibold mb-2 text-bolt-elements-textPrimary">Proveedores experimentales</h3>
           <p className="text-sm text-bolt-elements-textSecondary mb-4">
-            These providers are experimental and allow you to run AI models locally or connect to your own
-            infrastructure. They require additional setup but offer more flexibility.
+          Estos proveedores son experimentales y le permiten ejecutar modelos de IA localmente o conectarse a su propia infraestructura. Requieren una configuración adicional, pero ofrecen más flexibilidad.
           </p>
           <div className="space-y-4">{urlConfigurableProviders.map(renderProviderCard)}</div>
         </div>

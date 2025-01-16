@@ -28,35 +28,35 @@ export default function FeaturesTab() {
   return (
     <div className="p-4 bg-bolt-elements-bg-depth-2 border border-bolt-elements-borderColor rounded-lg mb-4">
       <div className="mb-6">
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Optional Features</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Características opcionales</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-bolt-elements-textPrimary">Debug Features</span>
+            <span className="text-bolt-elements-textPrimary">Funciones de depuración</span>
             <Switch className="ml-auto" checked={debug} onCheckedChange={handleToggle} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-bolt-elements-textPrimary">Use Main Branch</span>
+              <span className="text-bolt-elements-textPrimary">Usar sucursal principal</span>
               <p className="text-xs text-bolt-elements-textTertiary">
-                Check for updates against the main branch instead of stable
+              Buscar actualizaciones en la rama principal en lugar de la estable
               </p>
             </div>
             <Switch className="ml-auto" checked={isLatestBranch} onCheckedChange={enableLatestBranch} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-bolt-elements-textPrimary">Auto Select Code Template</span>
+              <span className="text-bolt-elements-textPrimary">Plantilla de código de selección automática</span>
               <p className="text-xs text-bolt-elements-textTertiary">
-                Let Bolt select the best starter template for your project.
+              Deje que Bolt seleccione la mejor plantilla de inicio para su proyecto.
               </p>
             </div>
             <Switch className="ml-auto" checked={autoSelectTemplate} onCheckedChange={setAutoSelectTemplate} />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-bolt-elements-textPrimary">Use Context Optimization</span>
+              <span className="text-bolt-elements-textPrimary">Deje que ecnix seleccione la mejor plantilla de inicio para su proyecto.</span>
               <p className="text-sm text-bolt-elements-textSecondary">
-                redact file contents form chat and puts the latest file contents on the system prompt
+              Redacta el contenido del archivo desde el chat y coloca el contenido del archivo más reciente en el indicador del sistema.
               </p>
             </div>
             <Switch
@@ -69,24 +69,23 @@ export default function FeaturesTab() {
       </div>
 
       <div className="mb-6 border-t border-bolt-elements-borderColor pt-4">
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Experimental Features</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Funciones experimentales</h3>
         <p className="text-sm text-bolt-elements-textSecondary mb-10">
-          Disclaimer: Experimental features may be unstable and are subject to change.
+        Descargo de responsabilidad: Las funciones experimentales pueden ser inestables y están sujetas a cambios.
         </p>
         <div className="flex flex-col">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-bolt-elements-textPrimary">Experimental Providers</span>
+            <span className="text-bolt-elements-textPrimary">Proveedores experimentales</span>
             <Switch className="ml-auto" checked={isLocalModel} onCheckedChange={enableLocalModels} />
           </div>
           <p className="text-xs text-bolt-elements-textTertiary mb-4">
-            Enable experimental providers such as Ollama, LMStudio, and OpenAILike.
-          </p>
+          Habilite proveedores experimentales como Ollama, LMStudio y OpenAILike.       </p>
         </div>
         <div className="flex items-start justify-between pt-4 mb-2 gap-2">
           <div className="flex-1 max-w-[200px]">
-            <span className="text-bolt-elements-textPrimary">Prompt Library</span>
+            <span className="text-bolt-elements-textPrimary">Biblioteca de mensajes</span>
             <p className="text-xs text-bolt-elements-textTertiary mb-4">
-              Choose a prompt from the library to use as the system prompt.
+            Seleccione un mensaje de la biblioteca para usarlo como mensaje del sistema.
             </p>
           </div>
           <select

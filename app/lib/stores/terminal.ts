@@ -30,7 +30,7 @@ export class TerminalStore {
       const wc = await this.#webcontainer;
       await this.#boltTerminal.init(wc, terminal);
     } catch (error: any) {
-      terminal.write(coloredText.red('Failed to spawn bolt shell\n\n') + error.message);
+      terminal.write(coloredText.red('No se pudo generar ecnix shell\n\n') + error.message);
       return;
     }
   }
@@ -40,7 +40,7 @@ export class TerminalStore {
       const shellProcess = await newShellProcess(await this.#webcontainer, terminal);
       this.#terminals.push({ terminal, process: shellProcess });
     } catch (error: any) {
-      terminal.write(coloredText.red('Failed to spawn shell\n\n') + error.message);
+      terminal.write(coloredText.red('No se pudo generar shell\n\n') + error.message);
       return;
     }
   }

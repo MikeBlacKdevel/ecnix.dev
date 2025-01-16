@@ -71,8 +71,8 @@ const GITHUB_URLS = {
         version: packageJson.version,
       };
     } catch (error) {
-      console.log('Failed to fetch local commit info:', error);
-      throw new Error('Failed to fetch local commit info');
+      console.log('No se pudo obtener la información de confirmación local:', error);
+      throw new Error('No se pudo obtener la información de confirmación local');
     }
   },
 };
@@ -165,7 +165,7 @@ function getSystemInfo(): SystemInfo {
       return `${formatBytes(memory.jsHeapSizeLimit)} (Used: ${formatBytes(memory.usedJSHeapSize)})`;
     }
 
-    return 'Not available';
+    return 'No disponible';
   };
 
   return {
@@ -189,19 +189,19 @@ function getSystemInfo(): SystemInfo {
 
 const checkProviderStatus = async (url: string | null, providerName: string): Promise<ProviderStatus> => {
   if (!url) {
-    console.log(`[Debug] No URL provided for ${providerName}`);
+    console.log(`[Depuración] No se proporcionó ninguna URL para ${providerName}`);
     return {
       name: providerName,
       enabled: false,
       isLocal: true,
       isRunning: false,
-      error: 'No URL configured',
+      error: 'Ninguna URL configurada',
       lastChecked: new Date(),
       url: null,
     };
   }
 
-  console.log(`[Debug] Checking status for ${providerName} at ${url}`);
+  console.log(`[Depuración] Comprobando el estado de ${providerName} at ${url}`);
 
   const startTime = performance.now();
 
@@ -209,7 +209,7 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
     if (providerName.toLowerCase() === 'ollama') {
       // Special check for Ollama root endpoint
       try {
-        console.log(`[Debug] Checking Ollama root endpoint: ${url}`);
+        console.log(`[Depuración] Comprobación del punto final raíz de Ollama: ${url}`);
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
@@ -223,10 +223,10 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
         clearTimeout(timeoutId);
 
         const text = await response.text();
-        console.log(`[Debug] Ollama root response:`, text);
+        console.log(`[Depuración] Respuesta de root de Ollama:`, text);
 
-        if (text.includes('Ollama is running')) {
-          console.log(`[Debug] Ollama running confirmed via root endpoint`);
+        if (text.includes('Ollama esta corriendo')) {
+          console.log(`[Depuración] Se confirmó la ejecución de Ollama a través del punto final raíz`);
           return {
             name: providerName,
             enabled: false,
@@ -238,9 +238,9 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
           };
         }
       } catch (error) {
-        console.log(`[Debug] Ollama root check failed:`, error);
+        console.log(`[Depuración] Error en la comprobación de raíz de Ollama:`, error);
 
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
 
         if (errorMessage.includes('aborted')) {
           return {
@@ -259,12 +259,12 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
 
     // Try different endpoints based on provider
     const checkUrls = [`${url}/api/health`, url.endsWith('v1') ? `${url}/models` : `${url}/v1/models`];
-    console.log(`[Debug] Checking additional endpoints:`, checkUrls);
+    console.log(`[Depuración] Comprobación de puntos finales adicionales:`, checkUrls);
 
     const results = await Promise.all(
       checkUrls.map(async (checkUrl) => {
         try {
-          console.log(`[Debug] Trying endpoint: ${checkUrl}`);
+          console.log(`[Depuración] Probando punto final: ${checkUrl}`);
 
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -278,27 +278,27 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
           clearTimeout(timeoutId);
 
           const ok = response.ok;
-          console.log(`[Debug] Endpoint ${checkUrl} response:`, ok);
+          console.log(`[Depuración] Respuesta del punto final ${checkUrl} respuesta:`, ok);
 
           if (ok) {
             try {
               const data = await response.json();
-              console.log(`[Debug] Endpoint ${checkUrl} data:`, data);
+              console.log(`[Depuración] Punto final ${checkUrl} datos:`, data);
             } catch {
-              console.log(`[Debug] Could not parse JSON from ${checkUrl}`);
+              console.log(`[Depuración] No se pudo analizar JSON desde ${checkUrl}`);
             }
           }
 
           return ok;
         } catch (error) {
-          console.log(`[Debug] Endpoint ${checkUrl} failed:`, error);
+          console.log(`[Depuración] Punto final ${checkUrl} fallido:`, error);
           return false;
         }
       }),
     );
 
     const isRunning = results.some((result) => result);
-    console.log(`[Debug] Final status for ${providerName}:`, isRunning);
+    console.log(`[Depuración] Estado final para ${providerName}:`, isRunning);
 
     return {
       name: providerName,
@@ -310,13 +310,13 @@ const checkProviderStatus = async (url: string | null, providerName: string): Pr
       url,
     };
   } catch (error) {
-    console.log(`[Debug] Provider check failed for ${providerName}:`, error);
+    console.log(`[Depuración] Error en la comprobación del proveedor para ${providerName}:`, error);
     return {
       name: providerName,
       enabled: false,
       isLocal: true,
       isRunning: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : 'Error desconocido',
       lastChecked: new Date(),
       responseTime: performance.now() - startTime,
       url,
@@ -353,7 +353,7 @@ export default function DebugTab() {
             }
 
             const url = settingsUrl || import.meta.env[envVarName] || null; // Ensure baseUrl is used
-            console.log(`[Debug] Using URL for ${provider.name}:`, url, `(from ${envVarName})`);
+            console.log(`[Depuración] Uso de URL para ${provider.name}:`, url, `(from ${envVarName})`);
 
             const status = await checkProviderStatus(url, provider.name);
 
@@ -366,7 +366,7 @@ export default function DebugTab() {
 
       setActiveProviders(statuses);
     } catch (error) {
-      console.error('[Debug] Failed to update provider statuses:', error);
+      console.error('[Depuración] No se pudieron actualizar los estados del proveedor:', error);
     }
   };
 
@@ -385,7 +385,7 @@ export default function DebugTab() {
 
     try {
       setIsCheckingUpdate(true);
-      setUpdateMessage('Checking for updates...');
+      setUpdateMessage('Buscando actualizaciones...');
 
       const branchToCheck = isLatestBranch ? 'main' : 'stable';
       console.log(`[Debug] Checking for updates against ${branchToCheck} branch`);
@@ -402,11 +402,11 @@ export default function DebugTab() {
             `Latest: ${remoteCommitHash.slice(0, 7)}`,
         );
       } else {
-        setUpdateMessage(`You are on the latest version from the ${branchToCheck} branch`);
+        setUpdateMessage(`Estás en la última versión de la ${branchToCheck} rama`);
       }
     } catch (error) {
-      setUpdateMessage('Failed to check for updates');
-      console.error('[Debug] Failed to check for updates:', error);
+      setUpdateMessage('No se pudo comprobar si hay actualizaciones');
+      console.error('[Depuración] Error al buscar actualizaciones:', error);
     } finally {
       setIsCheckingUpdate(false);
     }
@@ -433,20 +433,20 @@ export default function DebugTab() {
     };
 
     navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2)).then(() => {
-      toast.success('Debug information copied to clipboard!');
+      toast.success('¡Información de depuración copiada al portapapeles!');
     });
   }, [activeProviders, systemInfo, isLatestBranch]);
 
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary">Debug Information</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary">Información de depuración</h3>
         <div className="flex gap-2">
           <button
             onClick={handleCopyToClipboard}
             className="bg-bolt-elements-button-primary-background rounded-lg px-4 py-2 transition-colors duration-200 hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-button-primary-text"
           >
-            Copy Debug Info
+            Copiar información de depuración
           </button>
           <button
             onClick={handleCheckForUpdate}
@@ -455,7 +455,7 @@ export default function DebugTab() {
               ${!isCheckingUpdate ? 'hover:bg-bolt-elements-button-primary-backgroundHover' : 'opacity-75 cursor-not-allowed'}
               text-bolt-elements-button-primary-text`}
           >
-            {isCheckingUpdate ? 'Checking...' : 'Check for Updates'}
+            {isCheckingUpdate ? 'Comprobando...' : 'Buscar actualizaciones'}
           </button>
         </div>
       </div>
@@ -469,17 +469,17 @@ export default function DebugTab() {
           <p className="text-bolt-elements-textSecondary whitespace-pre-line">{updateMessage}</p>
           {updateMessage.includes('Update available') && (
             <div className="mt-3 text-sm">
-              <p className="font-medium text-bolt-elements-textPrimary">To update:</p>
+              <p className="font-medium text-bolt-elements-textPrimary">Para actualizar:</p>
               <ol className="list-decimal ml-4 mt-1 text-bolt-elements-textSecondary">
                 <li>
-                  Pull the latest changes:{' '}
-                  <code className="bg-bolt-elements-surface-hover px-1 rounded">git pull upstream main</code>
+                Extraiga los últimos cambios:{' '}
+                  <code className="bg-bolt-elements-surface-hover px-1 rounded">Git pull principal ascendente</code>
                 </li>
                 <li>
-                  Install any new dependencies:{' '}
-                  <code className="bg-bolt-elements-surface-hover px-1 rounded">pnpm install</code>
+                Instalar cualquier dependencia nueva:{' '}
+                  <code className="bg-bolt-elements-surface-hover px-1 rounded">instalación pnpm</code>
                 </li>
-                <li>Restart the application</li>
+                <li>Reinicia la aplicación</li>
               </ol>
             </div>
           )}
@@ -488,29 +488,29 @@ export default function DebugTab() {
 
       <section className="space-y-4">
         <div>
-          <h4 className="text-md font-medium text-bolt-elements-textPrimary mb-2">System Information</h4>
+          <h4 className="text-md font-medium text-bolt-elements-textPrimary mb-2">Información del sistema</h4>
           <div className="bg-bolt-elements-surface rounded-lg p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Operating System</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Sistema operativo</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.os}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Device Type</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Tipo de dispositivo</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.deviceType}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Browser</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Navegador</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.browser}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Display</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Mostrar</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">
                   {systemInfo.screen} ({systemInfo.colorDepth}) @{systemInfo.pixelRatio}x
                 </p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Connection</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Conexión</p>
                 <p className="text-sm font-medium flex items-center gap-2">
                   <span
                     className={`inline-block w-2 h-2 rounded-full ${systemInfo.online ? 'bg-green-500' : 'bg-red-500'}`}
@@ -521,24 +521,24 @@ export default function DebugTab() {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Screen Resolution</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Resolución de pantalla</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.screen}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Language</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Idioma</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.language}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">Timezone</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Zona horaria</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.timezone}</p>
               </div>
               <div>
-                <p className="text-xs text-bolt-elements-textSecondary">CPU Cores</p>
+                <p className="text-xs text-bolt-elements-textSecondary">Núcleos de CPU</p>
                 <p className="text-sm font-medium text-bolt-elements-textPrimary">{systemInfo.cores}</p>
               </div>
             </div>
             <div className="mt-3 pt-3 border-t border-bolt-elements-surface-hover">
-              <p className="text-xs text-bolt-elements-textSecondary">Version</p>
+              <p className="text-xs text-bolt-elements-textSecondary">Versión</p>
               <p className="text-sm font-medium text-bolt-elements-textPrimary font-mono">
                 {connitJson.commit.slice(0, 7)}
                 <span className="ml-2 text-xs text-bolt-elements-textSecondary">
@@ -550,7 +550,7 @@ export default function DebugTab() {
         </div>
 
         <div>
-          <h4 className="text-md font-medium text-bolt-elements-textPrimary mb-2">Local LLM Status</h4>
+          <h4 className="text-md font-medium text-bolt-elements-textPrimary mb-2">Estado de LLM local</h4>
           <div className="bg-bolt-elements-surface rounded-lg">
             <div className="grid grid-cols-1 divide-y">
               {activeProviders.map((provider) => (
@@ -616,7 +616,7 @@ export default function DebugTab() {
                     {/* Connection Info */}
                     {provider.url && (
                       <div className="text-bolt-elements-textSecondary">
-                        <span className="font-medium">Endpoints checked:</span>
+                        <span className="font-medium">Puntos finales comprobados:</span>
                         <ul className="list-disc list-inside pl-2 mt-1">
                           <li>{provider.url} (root)</li>
                           <li>{provider.url}/api/health</li>
@@ -628,7 +628,7 @@ export default function DebugTab() {
                 </div>
               ))}
               {activeProviders.length === 0 && (
-                <div className="p-4 text-center text-bolt-elements-textSecondary">No local LLMs configured</div>
+                <div className="p-4 text-center text-bolt-elements-textSecondary">No hay LLM locales configurados</div>
               )}
             </div>
           </div>

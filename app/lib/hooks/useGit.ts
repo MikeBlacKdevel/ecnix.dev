@@ -80,7 +80,7 @@ export function useGit() {
               return auth;
             }
 
-            if (confirm('This repo is password protected. Ready to enter a username & password?')) {
+            if (confirm('Este repositorio está protegido con contraseña. ¿Está listo para ingresar un nombre de usuario y una contraseña?')) {
               auth = {
                 username: prompt('Enter username'),
                 password: prompt('Enter password'),

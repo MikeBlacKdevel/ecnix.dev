@@ -123,10 +123,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           }
         }
       } catch (error) {
-        console.error('Error loading Provider Settings from cookies:', error);
+        console.error('Error al cargar la configuración del proveedor desde las cookies:', error);
 
         // Clear invalid cookie data
-        Cookies.remove('providers');
+        Cookies.remove('proveedores');
       }
 
       return providerSettings;
@@ -159,7 +159,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         };
 
         recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error);
+          console.error('Error de reconocimiento de voz:', event.error);
           setIsListening(false);
         };
 
@@ -176,7 +176,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
           parsedApiKeys = getApiKeysFromCookies();
           setApiKeys(parsedApiKeys);
         } catch (error) {
-          console.error('Error loading API keys from cookies:', error);
+          console.error('Error al cargar las claves API desde las cookies:', error);
 
           // Clear invalid cookie data
           Cookies.remove('apiKeys');
@@ -187,7 +187,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             setModelList(modelList);
           })
           .catch((error) => {
-            console.error('Error initializing model list:', error);
+            console.error('Error al inicializar la lista de modelos:', error);
           })
           .finally(() => {
             setIsModelLoading(undefined);
@@ -219,7 +219,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             return [...filteredOutPreModels, ...staticModels, ...dynamicModels];
           });
         } catch (error) {
-          console.error('Error loading dynamic models:', error);
+          console.error('Error al cargar modelos dinámicos:', error);
         }
         setIsModelLoading(undefined);
       }
@@ -321,12 +321,12 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div ref={scrollRef} className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[16vh] max-w-chat mx-auto text-center px-4 lg:px-0">
-                <h1 className="text-3xl lg:text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+              <div id="intro" className="mt-[16vh] max-w-[700px] mx-auto text-center px-4 lg:px-0">
+                <h1 className="text-3xl lg:text-5xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
+                Donde comienzan las ideas
                 </h1>
                 <p className="text-md lg:text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                Haga realidad sus ideas en segundos u obtenga ayuda en proyectos existentes.
                 </p>
               </div>
             )}
@@ -376,35 +376,36 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   )}
                 >
                   <svg className={classNames(styles.PromptEffectContainer)}>
-                    <defs>
-                      <linearGradient
-                        id="line-gradient"
-                        x1="20%"
-                        y1="0%"
-                        x2="-14%"
-                        y2="10%"
-                        gradientUnits="userSpaceOnUse"
-                        gradientTransform="rotate(-45)"
-                      >
-                        <stop offset="0%" stopColor="#b44aff" stopOpacity="0%"></stop>
-                        <stop offset="40%" stopColor="#b44aff" stopOpacity="80%"></stop>
-                        <stop offset="50%" stopColor="#b44aff" stopOpacity="80%"></stop>
-                        <stop offset="100%" stopColor="#b44aff" stopOpacity="0%"></stop>
-                      </linearGradient>
-                      <linearGradient id="shine-gradient">
-                        <stop offset="0%" stopColor="white" stopOpacity="0%"></stop>
-                        <stop offset="40%" stopColor="#ffffff" stopOpacity="80%"></stop>
-                        <stop offset="50%" stopColor="#ffffff" stopOpacity="80%"></stop>
-                        <stop offset="100%" stopColor="white" stopOpacity="0%"></stop>
-                      </linearGradient>
-                    </defs>
+                  <defs>
+  <linearGradient
+    id="line-gradient"
+    x1="20%"
+    y1="0%"
+    x2="-14%"
+    y2="10%"
+    gradientUnits="userSpaceOnUse"
+    gradientTransform="rotate(-45)"
+  >
+    <stop offset="0%" stopColor="#1E90FF" stopOpacity="0%"></stop>
+    <stop offset="40%" stopColor="#1E90FF" stopOpacity="80%"></stop>
+    <stop offset="50%" stopColor="#1E90FF" stopOpacity="80%"></stop>
+    <stop offset="100%" stopColor="#1E90FF" stopOpacity="0%"></stop>
+  </linearGradient>
+  <linearGradient id="shine-gradient">
+    <stop offset="0%" stopColor="white" stopOpacity="0%"></stop>
+    <stop offset="40%" stopColor="#ffffff" stopOpacity="80%"></stop>
+    <stop offset="50%" stopColor="#ffffff" stopOpacity="80%"></stop>
+    <stop offset="100%" stopColor="white" stopOpacity="0%"></stop>
+  </linearGradient>
+</defs>
+
                     <rect className={classNames(styles.PromptEffectLine)} pathLength="100" strokeLinecap="round"></rect>
                     <rect className={classNames(styles.PromptShine)} x="48" y="24" width="70" height="1"></rect>
                   </svg>
                   <div>
                     <ClientOnly>
                       {() => (
-                        <div className={isModelSettingsCollapsed ? 'hidden' : ''}>
+                        <div className={isModelSettingsCollapsed ? '' : 'hidden'}>
                           <ModelSelector
                             key={provider?.name + ':' + modelList.length}
                             model={model}
@@ -519,7 +520,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         minHeight: TEXTAREA_MIN_HEIGHT,
                         maxHeight: TEXTAREA_MAX_HEIGHT,
                       }}
-                      placeholder="How can Bolt help you today?"
+                      placeholder="¿Cómo puede ecnix ayudarle hoy?"
                       translate="no"
                     />
                     <ClientOnly>
@@ -543,7 +544,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     </ClientOnly>
                     <div className="flex justify-between items-center text-sm p-4 pt-2">
                       <div className="flex gap-1 items-center">
-                        <IconButton title="Upload file" className="transition-all" onClick={() => handleFileUpload()}>
+                        <IconButton title="Subir archivo" className="transition-all" onClick={() => handleFileUpload()}>
                           <div className="i-ph:paperclip text-xl"></div>
                         </IconButton>
                         <IconButton
@@ -552,7 +553,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           className={classNames('transition-all', enhancingPrompt ? 'opacity-100' : '')}
                           onClick={() => {
                             enhancePrompt?.();
-                            toast.success('Prompt enhanced!');
+                            toast.success('Prompt mejorado!');
                           }}
                         >
                           {enhancingPrompt ? (
@@ -570,7 +571,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         />
                         {chatStarted && <ClientOnly>{() => <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
                         <IconButton
-                          title="Model Settings"
+                          title="Configuración del modelo"
                           className={classNames('transition-all flex items-center gap-1', {
                             'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent':
                               isModelSettingsCollapsed,
@@ -580,15 +581,15 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           onClick={() => setIsModelSettingsCollapsed(!isModelSettingsCollapsed)}
                           disabled={!providerList || providerList.length === 0}
                         >
-                          <div className={`i-ph:caret-${isModelSettingsCollapsed ? 'right' : 'down'} text-lg`} />
-                          {isModelSettingsCollapsed ? <span className="text-xs">{model}</span> : <span />}
+                          <div className={`i-ph:caret-${isModelSettingsCollapsed ? 'down' : 'right'} text-lg`} />
+                          {isModelSettingsCollapsed ?  <span /> : <span className="text-xs">{model}</span> }
                         </IconButton>
                       </div>
                       {input.length > 3 ? (
                         <div className="text-xs text-bolt-elements-textTertiary">
-                          Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>{' '}
+                          Usar <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>{' '}
                           + <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd>{' '}
-                          a new line
+                          para salto de línea
                         </div>
                       ) : null}
                     </div>

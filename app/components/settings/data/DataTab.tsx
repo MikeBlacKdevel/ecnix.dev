@@ -48,9 +48,9 @@ export default function DataTab() {
 
   const handleExportAllChats = async () => {
     if (!db) {
-      const error = new Error('Database is not available');
-      logStore.logError('Failed to export chats - DB unavailable', error);
-      toast.error('Database is not available');
+      const error = new Error('La base de datos no está disponible');
+      logStore.logError('Error al exportar los chats - DB no disponible', error);
+      toast.error('La base de datos no está disponible');
 
       return;
     }
@@ -63,26 +63,26 @@ export default function DataTab() {
       };
 
       downloadAsJson(exportData, `all-chats-${new Date().toISOString()}.json`);
-      logStore.logSystem('Chats exported successfully', { count: allChats.length });
-      toast.success('Chats exported successfully');
+      logStore.logSystem('Los chats se exportaron correctamente', { count: allChats.length });
+      toast.success('Los chats se exportaron correctamente');
     } catch (error) {
-      logStore.logError('Failed to export chats', error);
-      toast.error('Failed to export chats');
+      logStore.logError('Error al exportar los chats', error);
+      toast.error('Error al exportar los chats');
       console.error(error);
     }
   };
 
   const handleDeleteAllChats = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete all chats? This action cannot be undone.');
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar todos los chats? Esta acción no se puede deshacer.');
 
     if (!confirmDelete) {
       return;
     }
 
     if (!db) {
-      const error = new Error('Database is not available');
-      logStore.logError('Failed to delete chats - DB unavailable', error);
-      toast.error('Database is not available');
+      const error = new Error('La base de datos no está disponible');
+      logStore.logError('Error al exportar los chats - DB no disponible', error);
+      toast.error('La base de datos no está disponible');
 
       return;
     }
@@ -92,12 +92,12 @@ export default function DataTab() {
 
       const allChats = await getAll(db);
       await Promise.all(allChats.map((chat) => deleteById(db!, chat.id)));
-      logStore.logSystem('All chats deleted successfully', { count: allChats.length });
-      toast.success('All chats deleted successfully');
+      logStore.logSystem('Todos los chats se eliminaron correctamente', { count: allChats.length });
+      toast.success('Todos los chats se eliminaron correctamente');
       navigate('/', { replace: true });
     } catch (error) {
-      logStore.logError('Failed to delete chats', error);
-      toast.error('Failed to delete chats');
+      logStore.logError('No se pudieron eliminar los chats', error);
+      toast.error('No se pudieron eliminar los chats');
       console.error(error);
     } finally {
       setIsDeleting(false);
@@ -122,7 +122,7 @@ export default function DataTab() {
     };
 
     downloadAsJson(settings, 'bolt-settings.json');
-    toast.success('Settings exported successfully');
+    toast.success('Configuración exportada correctamente');
   };
 
   const handleImportSettings = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,10 +148,10 @@ export default function DataTab() {
           }
         });
 
-        toast.success('Settings imported successfully. Please refresh the page for changes to take effect.');
+        toast.success('La configuración se importó correctamente. Actualice la página para que los cambios surtan efecto.');
       } catch (error) {
-        toast.error('Failed to import settings. Make sure the file is a valid JSON file.');
-        console.error('Failed to import settings:', error);
+        toast.error('No se pudo importar la configuración. Asegúrese de que el archivo sea un archivo JSON válido.');
+        console.error('Error al importar la configuración:', error);
       }
     };
     reader.readAsText(file);
@@ -170,7 +170,7 @@ export default function DataTab() {
     template.TOGETHER_API_BASE_URL = '';
 
     downloadAsJson(template, 'api-keys-template.json');
-    toast.success('API keys template exported successfully');
+    toast.success('Plantilla de claves API exportada con éxito');
   };
 
   const handleImportApiKeys = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -206,14 +206,14 @@ export default function DataTab() {
             Cookies.set(`${provider}_API_KEY`, key);
           });
 
-          toast.success(`Successfully imported ${importedCount} API keys/URLs. Refreshing page to apply changes...`);
+          toast.success(`Se importaron correctamente ${importedCount} claves API/URL. Actualizando la página para aplicar los cambios...`);
 
           // Reload the page after a short delay to allow the toast to be seen
           setTimeout(() => {
             window.location.reload();
           }, 1500);
         } else {
-          toast.warn('No valid API keys found in the file');
+          toast.warn('No se encontraron claves API válidas en el archivo');
         }
 
         // Set base URLs if they exist
@@ -225,8 +225,8 @@ export default function DataTab() {
           },
         );
       } catch (error) {
-        toast.error('Failed to import API keys. Make sure the file is a valid JSON file.');
-        console.error('Failed to import API keys:', error);
+        toast.error('No se pudieron importar las claves API. Asegúrese de que el archivo sea un archivo JSON válido.');
+        console.error('Error al importar claves API:', error);
       }
     };
     reader.readAsText(file);
@@ -248,7 +248,7 @@ export default function DataTab() {
         {
           id: chatId,
           messages: data.messages,
-          description: data.description || 'Imported Chat',
+          description: data.description || 'Chat importado',
           urlId: chatId,
         },
       ];
@@ -259,13 +259,13 @@ export default function DataTab() {
       return data.chats.map((chat: { id?: string; messages: Message[]; description?: string; urlId?: string }) => ({
         id: chat.id || crypto.randomUUID(),
         messages: chat.messages,
-        description: chat.description || 'Imported Chat',
+        description: chat.description || 'Chat importado',
         urlId: chat.urlId,
       }));
     }
 
-    console.error('No matching format found for:', data);
-    throw new Error('Unsupported chat format');
+    console.error('No se encontró ningún formato coincidente para:', data);
+    throw new Error('Formato de chat no compatible');
   };
 
   const handleImportChats = () => {
@@ -277,7 +277,7 @@ export default function DataTab() {
       const file = (e.target as HTMLInputElement).files?.[0];
 
       if (!file || !db) {
-        toast.error('Something went wrong');
+        toast.error('Algo salió mal');
         return;
       }
 
@@ -290,15 +290,15 @@ export default function DataTab() {
           await setMessages(db, chat.id, chat.messages, chat.urlId, chat.description);
         }
 
-        logStore.logSystem('Chats imported successfully', { count: chatsToImport.length });
-        toast.success(`Successfully imported ${chatsToImport.length} chat${chatsToImport.length > 1 ? 's' : ''}`);
+        logStore.logSystem('Chats importados exitosamente', { count: chatsToImport.length });
+        toast.success(`Importado exitosamente ${chatsToImport.length} chat${chatsToImport.length > 1 ? 's' : ''}`);
         window.location.reload();
       } catch (error) {
         if (error instanceof Error) {
-          logStore.logError('Failed to import chats:', error);
-          toast.error('Failed to import chats: ' + error.message);
+          logStore.logError('Error al importar chats:', error);
+          toast.error('Error al importar chats: ' + error.message);
         } else {
-          toast.error('Failed to import chats');
+          toast.error('Error al importar chats');
         }
 
         console.error(error);
@@ -311,24 +311,24 @@ export default function DataTab() {
   return (
     <div className="p-4 bg-bolt-elements-bg-depth-2 border border-bolt-elements-borderColor rounded-lg mb-4">
       <div className="mb-6">
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Data Management</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Gestión de datos</h3>
         <div className="space-y-8">
           <div className="flex flex-col gap-4">
             <div>
-              <h4 className="text-bolt-elements-textPrimary mb-2">Chat History</h4>
-              <p className="text-sm text-bolt-elements-textSecondary mb-4">Export or delete all your chat history.</p>
+              <h4 className="text-bolt-elements-textPrimary mb-2">Historial de chat</h4>
+              <p className="text-sm text-bolt-elements-textSecondary mb-4">Exporta o elimina todo tu historial de chat.</p>
               <div className="flex gap-4">
                 <button
                   onClick={handleExportAllChats}
                   className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors"
                 >
-                  Export All Chats
+                  Exportar todos los chats
                 </button>
                 <button
                   onClick={handleImportChats}
                   className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors"
                 >
-                  Import Chats
+                  Importar chats
                 </button>
                 <button
                   onClick={handleDeleteAllChats}
@@ -338,44 +338,44 @@ export default function DataTab() {
                     isDeleting ? 'opacity-50 cursor-not-allowed' : '',
                   )}
                 >
-                  {isDeleting ? 'Deleting...' : 'Delete All Chats'}
+                  {isDeleting ? 'Borrando...' : 'Borrar todos los chats'}
                 </button>
               </div>
             </div>
 
             <div>
-              <h4 className="text-bolt-elements-textPrimary mb-2">Settings Backup</h4>
+              <h4 className="text-bolt-elements-textPrimary mb-2">Copia de seguridad de configuración</h4>
               <p className="text-sm text-bolt-elements-textSecondary mb-4">
-                Export your settings to a JSON file or import settings from a previously exported file.
+              Exporte su configuración a un archivo JSON o importe la configuración desde un archivo previamente exportado.
               </p>
               <div className="flex gap-4">
                 <button
                   onClick={handleExportSettings}
                   className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors"
                 >
-                  Export Settings
+                  Exportar configuraciones
                 </button>
                 <label className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors cursor-pointer">
-                  Import Settings
+                  Importar configuraciones
                   <input type="file" accept=".json" onChange={handleImportSettings} className="hidden" />
                 </label>
               </div>
             </div>
 
             <div>
-              <h4 className="text-bolt-elements-textPrimary mb-2">API Keys Management</h4>
+              <h4 className="text-bolt-elements-textPrimary mb-2">Gestión de claves API</h4>
               <p className="text-sm text-bolt-elements-textSecondary mb-4">
-                Import API keys from a JSON file or download a template to fill in your keys.
+              Importe claves API desde un archivo JSON o descargue una plantilla para completar sus claves.
               </p>
               <div className="flex gap-4">
                 <button
                   onClick={handleExportApiKeyTemplate}
                   className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors"
                 >
-                  Download Template
+                  Descargar plantilla
                 </button>
                 <label className="px-4 py-2 bg-bolt-elements-button-primary-background hover:bg-bolt-elements-button-primary-backgroundHover text-bolt-elements-textPrimary rounded-lg transition-colors cursor-pointer">
-                  Import API Keys
+                Importar claves API
                   <input type="file" accept=".json" onChange={handleImportApiKeys} className="hidden" />
                 </label>
               </div>

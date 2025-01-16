@@ -265,14 +265,14 @@ export const Preview = memo(() => {
         <IconButton
           icon="i-ph:devices"
           onClick={toggleDeviceMode}
-          title={isDeviceModeOn ? 'Switch to Responsive Mode' : 'Switch to Device Mode'}
+          title={isDeviceModeOn ? 'Cambiar al modo responsivo' : 'Cambiar al modo de dispositivo'}
         />
 
         {/* Fullscreen toggle button */}
         <IconButton
           icon={isFullscreen ? 'i-ph:arrows-in' : 'i-ph:arrows-out'}
           onClick={toggleFullscreen}
-          title={isFullscreen ? 'Exit Full Screen' : 'Full Screen'}
+          title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
         />
       </div>
 

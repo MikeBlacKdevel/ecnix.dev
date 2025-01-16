@@ -28,7 +28,7 @@ export function toggleTheme() {
   const currentTheme = themeStore.get();
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
   themeStore.set(newTheme);
-  logStore.logSystem(`Theme changed to ${newTheme} mode`);
+  logStore.logSystem(`Tema cambia a ${newTheme} modo`);
   localStorage.setItem(kTheme, newTheme);
   document.querySelector('html')?.setAttribute('data-theme', newTheme);
 }

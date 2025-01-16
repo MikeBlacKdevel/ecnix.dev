@@ -76,7 +76,7 @@ export const EditorPanel = memo(
               <div className="flex flex-col border-r border-bolt-elements-borderColor h-full">
                 <PanelHeader>
                   <div className="i-ph:tree-structure-duotone shrink-0" />
-                  Files
+                  Archivos
                 </PanelHeader>
                 <FileTree
                   className="h-full"
@@ -99,11 +99,11 @@ export const EditorPanel = memo(
                       <div className="flex gap-1 ml-auto -mr-1.5">
                         <PanelHeaderButton onClick={onFileSave}>
                           <div className="i-ph:floppy-disk-duotone" />
-                          Save
+                          Guardar
                         </PanelHeaderButton>
                         <PanelHeaderButton onClick={onFileReset}>
                           <div className="i-ph:clock-counter-clockwise-duotone" />
-                          Reset
+                          Reiniciar
                         </PanelHeaderButton>
                       </div>
                     )}

@@ -18,17 +18,17 @@ interface SettingsProps {
   onClose: () => void;
 }
 
-type TabType = 'data' | 'providers' | 'features' | 'debug' | 'event-logs' | 'connection';
+type TabType = 'datos' | 'proveedores' | 'características' | 'depuración' | 'registros de eventos' | 'conexión';
 
 export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
   const { debug, eventLogs } = useSettings();
-  const [activeTab, setActiveTab] = useState<TabType>('data');
+  const [activeTab, setActiveTab] = useState<TabType>('datos');
 
   const tabs: { id: TabType; label: string; icon: string; component?: ReactElement }[] = [
-    { id: 'data', label: 'Data', icon: 'i-ph:database', component: <DataTab /> },
-    { id: 'providers', label: 'Providers', icon: 'i-ph:key', component: <ProvidersTab /> },
-    { id: 'connection', label: 'Connection', icon: 'i-ph:link', component: <ConnectionsTab /> },
-    { id: 'features', label: 'Features', icon: 'i-ph:star', component: <FeaturesTab /> },
+    { id: 'datos', label: 'Datos', icon: 'i-ph:database', component: <DataTab /> },
+    { id: 'proveedores', label: 'Proveedores', icon: 'i-ph:key', component: <ProvidersTab /> },
+    { id: 'conexión', label: 'Conexión', icon: 'i-ph:link', component: <ConnectionsTab /> },
+    { id: 'características', label: 'Características', icon: 'i-ph:star', component: <FeaturesTab /> },
     ...(debug
       ? [
           {
@@ -79,7 +79,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
                 )}
               >
                 <DialogTitle className="flex-shrink-0 text-lg font-semibold text-bolt-elements-textPrimary mb-2">
-                  Settings
+                  Ajustes
                 </DialogTitle>
                 {tabs.map((tab) => (
                   <button
@@ -108,7 +108,7 @@ export const SettingsWindow = ({ open, onClose }: SettingsProps) => {
                     className={classNames(styles['settings-button'], 'flex items-center gap-2')}
                   >
                     <div className="i-ph:book" />
-                    Docs
+                    Documentación
                   </a>
                 </div>
               </div>

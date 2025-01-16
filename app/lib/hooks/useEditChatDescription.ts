@@ -72,7 +72,7 @@ export function useEditChatDescription({
       const chat = await getMessages(db, chatId);
       return chat?.description || initialDescription;
     } catch (error) {
-      console.error('Failed to fetch latest description:', error);
+      console.error('No se pudo obtener la última descripción:', error);
       return initialDescription;
     }
   }, [db, chatId, initialDescription]);
@@ -97,12 +97,12 @@ export function useEditChatDescription({
     const characterValid = /^[a-zA-Z0-9\s\-_.,!?()[\]{}'"]+$/.test(trimmedDesc);
 
     if (!lengthValid) {
-      toast.error('Description must be between 1 and 100 characters.');
+      toast.error('La descripción debe tener entre 1 y 100 caracteres.');
       return false;
     }
 
     if (!characterValid) {
-      toast.error('Description can only contain letters, numbers, spaces, and basic punctuation.');
+      toast.error('La descripción solo puede contener letras, números, espacios y puntuación básica.');
       return false;
     }
 
@@ -119,12 +119,12 @@ export function useEditChatDescription({
 
       try {
         if (!db) {
-          toast.error('Chat persistence is not available');
+          toast.error('La persistencia del chat no está disponible');
           return;
         }
 
         if (!chatId) {
-          toast.error('Chat Id is not available');
+          toast.error('El ID del chat no está disponible');
           return;
         }
 
@@ -134,9 +134,9 @@ export function useEditChatDescription({
           descriptionStore.set(currentDescription);
         }
 
-        toast.success('Chat description updated successfully');
+        toast.success('Descripción del chat actualizada con éxito');
       } catch (error) {
-        toast.error('Failed to update chat description: ' + (error as Error).message);
+        toast.error('No se pudo actualizar la descripción del chat: ' + (error as Error).message);
       }
 
       toggleEditMode();
