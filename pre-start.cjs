@@ -17,10 +17,10 @@ let commitJson = {
 console.log(`
 ★═══════════════════════════════════════★
              ECNIX
-         ⚡️  Welcome  ⚡️
+         ⚡️  Bienvenido  ⚡️
 ★═══════════════════════════════════════★
 `);
-console.log('📍 Current Version Tag:', `v${commitJson.version}`);
-console.log('📍 Current Commit Version:', commitJson.hash);
-console.log('  Please wait until the URL appears here');
-console.log('★═══════════════════════════════════════★');
+console.log('📍 Etiqueta de versión actual:', `v${commitJson.version}`);
+console.log('📍 Versión de confirmación actual:', commitJson.hash);
+console.log('Espere hasta que la URL aparezca aquí');
+console.log('★══════════════ ═════════════════════════★');

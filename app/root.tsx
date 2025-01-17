@@ -6,7 +6,7 @@ import { themeStore } from './lib/stores/theme';
 import { stripIndents } from './utils/stripIndent';
 import { createHead } from 'remix-island';
 import { useEffect } from 'react';
-import logo from "../public/e.png"
+const logo = '/e.png'; // Usar la URL del archivo
 
 import reactToastifyStyles from 'react-toastify/dist/ReactToastify.css?url';
 import globalStyles from './styles/index.scss?url';
@@ -17,7 +17,7 @@ import 'virtual:uno.css';
 export const links: LinksFunction = () => [
   {
     rel: 'icon',
-    href: '../public/e.png',
+    href: logo, // Cambiado para usar la URL directamente    
     type: 'image/svg+xml',
   },
   { rel: 'stylesheet', href: reactToastifyStyles },
