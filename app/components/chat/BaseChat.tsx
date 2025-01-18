@@ -582,8 +582,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           disabled={!providerList || providerList.length === 0}
                         >
                           <div className={`i-ph:caret-${isModelSettingsCollapsed ? 'down' : 'right'} text-lg`} />
-                           {isModelSettingsCollapsed ?  <span /> : <span/> } 
-                           {/*<span className="text-xs">{model}</span> */}
+                           {isModelSettingsCollapsed ?  <span /> : <span className="text-xs">{model}</span> } 
                         </IconButton>
                       </div>
                       {input.length > 3 ? (
