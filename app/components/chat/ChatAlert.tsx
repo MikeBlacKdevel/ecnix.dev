@@ -14,8 +14,8 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
   const isPreview = source === 'preview';
   const title = isPreview ? 'Error de vista previa' : 'Error de terminal';
   const message = isPreview
-    ? 'Hemos encontrado un error al ejecutar la vista previa. ¿Te gustaría que Bolt lo analizara y ayudara a resolver este problema?'
-    : 'Hemos encontrado un error al ejecutar comandos en el terminal. ¿Te gustaría que Bolt lo analizara y ayudara a resolver este problema?';
+    ? 'Hemos encontrado un error al ejecutar la vista previa. ¿Te gustaría que ecnix lo analizara y ayudara a resolver este problema?'
+    : 'Hemos encontrado un error al ejecutar comandos en el terminal. ¿Te gustaría que ecnix lo analizara y ayudara a resolver este problema?';
 
   return (
     <AnimatePresence>

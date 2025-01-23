@@ -122,6 +122,7 @@
     "pnpm": "^9.14.4",
     "prettier": "^3.4.1",
     "sass-embedded": "^1.81.0",
+    "terser": "^5.37.0",
     "typescript": "^5.7.2",
     "unified": "^11.0.5",
     "unocss": "^0.61.9",

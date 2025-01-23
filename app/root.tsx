@@ -6,7 +6,6 @@ import { themeStore } from './lib/stores/theme';
 import { stripIndents } from './utils/stripIndent';
 import { createHead } from 'remix-island';
 import { useEffect } from 'react';
-const logo = '/e.png'; // Usar la URL del archivo
 
 import reactToastifyStyles from 'react-toastify/dist/ReactToastify.css?url';
 import globalStyles from './styles/index.scss?url';
@@ -17,7 +16,7 @@ import 'virtual:uno.css';
 export const links: LinksFunction = () => [
   {
     rel: 'icon',
-    href: logo, // Cambiado para usar la URL directamente    
+    href: '/e.png', 
     type: 'image/svg+xml',
   },
   { rel: 'stylesheet', href: reactToastifyStyles },
@@ -37,6 +36,8 @@ export const links: LinksFunction = () => [
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
   },
+  // Agrega el enlace a tu archivo CSS con versionado único
+  { rel: 'stylesheet', href: '/styles.css?v=1.0.1' },
 ];
 
 const inlineThemeCode = stripIndents`
@@ -56,7 +57,7 @@ const inlineThemeCode = stripIndents`
 export const Head = createHead(() => (
   <>
     <meta charSet="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <Meta />
     <Links />
     <script dangerouslySetInnerHTML={{ __html: inlineThemeCode }} />
@@ -74,6 +75,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <ScrollRestoration />
+      {/* Agrega el enlace a tu archivo JS con versionado único */}
+      <script src="/app.js?v=1.0.1" />
       <Scripts />
     </>
   );

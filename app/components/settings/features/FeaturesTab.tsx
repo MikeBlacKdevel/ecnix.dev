@@ -47,7 +47,7 @@ export default function FeaturesTab() {
             <div>
               <span className="text-bolt-elements-textPrimary">Plantilla de código de selección automática</span>
               <p className="text-xs text-bolt-elements-textTertiary">
-              Deje que Bolt seleccione la mejor plantilla de inicio para su proyecto.
+              Deje que ecnix seleccione la mejor plantilla de inicio para su proyecto.
               </p>
             </div>
             <Switch className="ml-auto" checked={autoSelectTemplate} onCheckedChange={setAutoSelectTemplate} />
