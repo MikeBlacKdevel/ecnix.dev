@@ -228,7 +228,7 @@ export const CodeMirrorEditor = memo(
       }
 
       if (doc.filePath === '') {
-        logger.warn('File path should not be empty');
+        logger.warn('La ruta del archivo no debe estar vacía');
       }
 
       let state = editorStates.get(doc.filePath);
@@ -264,7 +264,7 @@ export const CodeMirrorEditor = memo(
 
 export default CodeMirrorEditor;
 
-CodeMirrorEditor.displayName = 'CodeMirrorEditor';
+CodeMirrorEditor.displayName = 'Editor de CodeMirror';
 
 function newEditorState(
   content: string,
@@ -415,7 +415,7 @@ function setEditorDocument(
 
       if (autoFocus && editable) {
         if (needsScrolling) {
-          // we have to wait until the scroll position was changed before we can set the focus
+          //Tenemos que esperar hasta que se cambie la posición de desplazamiento antes de poder establecer el foco
           view.scrollDOM.addEventListener(
             'scroll',
             () => {
@@ -424,7 +424,7 @@ function setEditorDocument(
             { once: true },
           );
         } else {
-          // if the scroll position is still the same we can focus immediately
+          // Si la posición de desplazamiento sigue siendo la misma, podemos enfocar inmediatamente
           view.focus();
         }
       }
@@ -451,8 +451,8 @@ function getReadOnlyTooltip(state: EditorState) {
         arrow: true,
         create: () => {
           const divElement = document.createElement('div');
-          divElement.className = 'cm-readonly-tooltip';
-          divElement.textContent = 'Cannot edit file while AI response is being generated';
+          divElement.className = 'Solo lectura';
+          divElement.textContent = 'No se puede editar el archivo mientras se genera la respuesta de IA';
 
           return { dom: divElement };
         },

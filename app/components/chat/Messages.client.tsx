@@ -1,42 +1,44 @@
 import type { Message } from 'ai';
 import React, { Fragment } from 'react';
-import { classNames } from '~/utils/classNames';
-import { AssistantMessage } from './AssistantMessage';
-import { UserMessage } from './UserMessage';
-import { useLocation } from '@remix-run/react';
-import { db, chatId } from '~/lib/persistence/useChatHistory';
-import { forkChat } from '~/lib/persistence/db';
-import { toast } from 'react-toastify';
-import WithTooltip from '~/components/ui/Tooltip';
+import { classNames } from '~/utils/classNames'; // Función para aplicar clases dinámicamente
+import { AssistantMessage } from './AssistantMessage'; // Componente para los mensajes del asistente
+import { UserMessage } from './UserMessage'; // Componente para los mensajes del usuario
+import { useLocation } from '@remix-run/react'; // Hook para obtener la ubicación actual
+import { db, chatId } from '~/lib/persistence/useChatHistory'; // Funciones para manejar la persistencia del chat
+import { forkChat } from '~/lib/persistence/db'; // Función para crear una bifurcación del chat
+import { toast } from 'react-toastify'; // Función para mostrar notificaciones
+import WithTooltip from '~/components/ui/Tooltip'; // Componente para mostrar tooltips
 
 interface MessagesProps {
-  id?: string;
-  className?: string;
-  isStreaming?: boolean;
-  messages?: Message[];
+  id?: string; // ID opcional para el contenedor
+  className?: string; // Clases adicionales para el contenedor
+  isStreaming?: boolean; // Si el chat está en modo streaming (tiempo real)
+  messages?: Message[]; // Array de mensajes a mostrar
 }
 
 export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: MessagesProps, ref) => {
-  const { id, isStreaming = false, messages = [] } = props;
-  const location = useLocation();
+  const { id, isStreaming = false, messages = [] } = props; // Desestructuración de props
+  const location = useLocation(); // Obtiene la ubicación actual
 
+  // Función para "rebobinar" el chat a un mensaje específico
   const handleRewind = (messageId: string) => {
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set('rewindTo', messageId);
-    window.location.search = searchParams.toString();
+    searchParams.set('rewindTo', messageId); // Establece el parámetro 'rewindTo'
+    window.location.search = searchParams.toString(); // Actualiza la URL
   };
 
+  // Función para bifurcar el chat a partir de un mensaje específico
   const handleFork = async (messageId: string) => {
     try {
       if (!db || !chatId.get()) {
-        toast.error('Chat persistence is not available');
+        toast.error('La persistencia del chat no está disponible'); // Muestra un error si la persistencia del chat no está disponible
         return;
       }
 
-      const urlId = await forkChat(db, chatId.get()!, messageId);
-      window.location.href = `/chat/${urlId}`;
+      const urlId = await forkChat(db, chatId.get()!, messageId); // Crea la bifurcación
+      window.location.href = `/chat/${urlId}`; // Redirige al nuevo chat bifurcado
     } catch (error) {
-      toast.error('Failed to fork chat: ' + (error as Error).message);
+      toast.error('Error al bifurcar el chat: ' + (error as Error).message); // Muestra un error si la bifurcación falla
     }
   };
 
@@ -79,7 +81,7 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
                 {!isUserMessage && (
                   <div className="flex gap-2 flex-col lg:flex-row">
                     {messageId && (
-                      <WithTooltip tooltip="Revert to this message">
+                      <WithTooltip tooltip="Regresar a este mensaje">
                         <button
                           onClick={() => handleRewind(messageId)}
                           key="i-ph:arrow-u-up-left"
@@ -91,7 +93,7 @@ export const Messages = React.forwardRef<HTMLDivElement, MessagesProps>((props: 
                       </WithTooltip>
                     )}
 
-                    <WithTooltip tooltip="Fork chat from this message">
+                    <WithTooltip tooltip="Bifurcación del chat a partir de este mensaje">
                       <button
                         onClick={() => handleFork(messageId)}
                         key="i-ph:git-fork"

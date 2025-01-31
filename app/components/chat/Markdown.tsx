@@ -26,7 +26,7 @@ export const Markdown = memo(({ children, html = false, limitedMarkdown = false 
           const messageId = node?.properties.dataMessageId as string;
 
           if (!messageId) {
-            logger.error(`Invalid message id ${messageId}`);
+            logger.error(`Mensaje Id invalido ${messageId}`);
           }
 
           return <Artifact messageId={messageId} />;
@@ -74,23 +74,23 @@ export const Markdown = memo(({ children, html = false, limitedMarkdown = false 
 });
 
 /**
- * Removes code fence markers (```) surrounding an artifact element while preserving the artifact content.
- * This is necessary because artifacts should not be wrapped in code blocks when rendered for rendering action list.
+ * Elimina los delimitadores de código (```) que rodean un elemento de artefacto mientras conserva el contenido del artefacto.
+ * Esto es necesario porque los artefactos no deben estar envueltos en bloques de código cuando se renderizan para una lista de acciones.
  *
- * @param content - The markdown content to process
- * @returns The processed content with code fence markers removed around artifacts
+ * @param content - El contenido markdown a procesar
+ * @returns El contenido procesado con los delimitadores de código eliminados alrededor de los artefactos
  *
  * @example
- * // Removes code fences around artifact
+ * // Elimina los delimitadores de código alrededor de un artefacto
  * const input = "```xml\n<div class='__boltArtifact__'></div>\n```";
  * stripCodeFenceFromArtifact(input);
- * // Returns: "\n<div class='__boltArtifact__'></div>\n"
+ * // Retorna: "\n<div class='__boltArtifact__'></div>\n"
  *
  * @remarks
- * - Only removes code fences that directly wrap an artifact (marked with __boltArtifact__ class)
- * - Handles code fences with optional language specifications (e.g. ```xml, ```typescript)
- * - Preserves original content if no artifact is found
- * - Safely handles edge cases like empty input or artifacts at start/end of content
+ * - Solo elimina los delimitadores de código que envuelven directamente un artefacto (marcado con la clase __boltArtifact__)
+ * - Maneja delimitadores de código con especificaciones de lenguaje opcionales (por ejemplo, ```xml, ```typescript)
+ * - Conserva el contenido original si no se encuentra un artefacto
+ * - Maneja de forma segura casos extremos como entradas vacías o artefactos al inicio o final del contenido
  */
 export const stripCodeFenceFromArtifact = (content: string) => {
   if (!content || !content.includes('__boltArtifact__')) {
@@ -100,12 +100,12 @@ export const stripCodeFenceFromArtifact = (content: string) => {
   const lines = content.split('\n');
   const artifactLineIndex = lines.findIndex((line) => line.includes('__boltArtifact__'));
 
-  // Return original content if artifact line not found
+  // Retorna el contenido original si no se encuentra la línea del artefacto
   if (artifactLineIndex === -1) {
     return content;
   }
 
-  // Check previous line for code fence
+  // Verifica la línea anterior en busca de delimitador de código
   if (artifactLineIndex > 0 && lines[artifactLineIndex - 1]?.trim().match(/^```\w*$/)) {
     lines[artifactLineIndex - 1] = '';
   }

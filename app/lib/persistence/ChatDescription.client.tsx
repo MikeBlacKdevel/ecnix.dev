@@ -33,7 +33,7 @@ export function ChatDescription() {
             style={{ width: `${Math.max(currentDescription.length * 8, 100)}px` }}
           />
           <TooltipProvider>
-            <WithTooltip tooltip="Save title">
+            <WithTooltip tooltip="Guardar titulo">
               <div className="flex justify-between items-center p-2 rounded-md bg-bolt-elements-item-backgroundAccent">
                 <button
                   type="submit"
@@ -48,7 +48,7 @@ export function ChatDescription() {
         <>
           {currentDescription}
           <TooltipProvider>
-            <WithTooltip tooltip="Rename chat">
+            <WithTooltip tooltip="Renombrar chat">
               <div className="flex justify-between items-center p-2 rounded-md bg-bolt-elements-item-backgroundAccent ml-2">
                 <button
                   type="button"

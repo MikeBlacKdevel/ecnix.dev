@@ -81,7 +81,7 @@ export const detectProjectType = async (
       return {
         type: 'Node.js',
         setupCommand: `npm install && npm run ${availableCommand}`,
-        followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
+        followupMessage: `Se encontró el script "${availableCommand}" en package.json. Se está ejecutando "npm run ${availableCommand}" después de la instalación.`,
       };
     }
 

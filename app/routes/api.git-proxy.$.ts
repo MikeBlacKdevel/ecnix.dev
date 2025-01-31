@@ -13,7 +13,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 async function handleProxyRequest(request: Request, path: string | undefined) {
   try {
     if (!path) {
-      return json({ error: 'Invalid proxy URL format' }, { status: 400 });
+      return json({ error: 'Formato de URL de proxy no válido' }, { status: 400 });
     }
 
     const url = new URL(request.url);
@@ -59,7 +59,7 @@ async function handleProxyRequest(request: Request, path: string | undefined) {
       headers: responseHeaders,
     });
   } catch (error) {
-    console.error('Git proxy error:', error);
-    return json({ error: 'Proxy error' }, { status: 500 });
+    console.error('Error de proxy de Git:', error);
+    return json({ error: 'Error de proxy' }, { status: 500 });
   }
 }

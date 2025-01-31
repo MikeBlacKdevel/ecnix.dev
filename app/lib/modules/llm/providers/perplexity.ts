@@ -50,7 +50,7 @@ export default class PerplexityProvider extends BaseProvider {
     });
 
     if (!apiKey) {
-      throw new Error(`Missing API key for ${this.name} provider`);
+      throw new Error(`Falta la clave API para el ${this.name} proveedor`);
     }
 
     const perplexity = createOpenAI({

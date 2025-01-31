@@ -22,11 +22,11 @@ export const ModelSelector = ({
   providerList,
   modelLoading,
 }: ModelSelectorProps) => {
-  // Load enabled providers from cookies
+  // Cargar proveedores habilitados desde las cookies
 
-  // Update enabled providers when cookies change
+  // Actualizar proveedores habilitados cuando las cookies cambian
   useEffect(() => {
-    // If current provider is disabled, switch to first enabled provider
+    // Si el proveedor actual está deshabilitado, cambiar al primer proveedor habilitado
     if (providerList.length == 0) {
       return;
     }
@@ -35,7 +35,7 @@ export const ModelSelector = ({
       const firstEnabledProvider = providerList[0];
       setProvider?.(firstEnabledProvider);
 
-      // Also update the model to the first available one for the new provider
+      // También actualizar el modelo al primero disponible para el nuevo proveedor
       const firstModel = modelList.find((m) => m.provider === firstEnabledProvider.name);
 
       if (firstModel) {
@@ -48,8 +48,8 @@ export const ModelSelector = ({
     return (
       <div className="mb-2 p-4 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary">
         <p className="text-center">
-          No providers are currently enabled. Please enable at least one provider in the settings to start using the
-          chat.
+        Actualmente no hay ningún proveedor habilitado. Habilite al menos un proveedor en la configuración para comenzar a usar el
+        chat.
         </p>
       </div>
     );
@@ -85,11 +85,11 @@ export const ModelSelector = ({
         value={model}
         onChange={(e) => setModel?.(e.target.value)}
         className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[70%]"
-        disabled={modelLoading === 'all' || modelLoading === provider?.name}
+        disabled={modelLoading === 'Todo' || modelLoading === provider?.name}
       >
-        {modelLoading == 'all' || modelLoading == provider?.name ? (
+        {modelLoading == 'Todo' || modelLoading == provider?.name ? (
           <option key={0} value="">
-            Loading...
+            Cargado...
           </option>
         ) : (
           [...modelList]

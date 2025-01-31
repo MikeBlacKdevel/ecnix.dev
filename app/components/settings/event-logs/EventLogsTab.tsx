@@ -34,25 +34,25 @@ export default function EventLogsTab() {
 
   useEffect(() => {
     // System info logs
-    logStore.logSystem('Application initialized', {
+    logStore.logSystem('Aplicación inicializada', {
       version: process.env.NEXT_PUBLIC_APP_VERSION,
       environment: process.env.NODE_ENV,
     });
 
     // Debug logs for system state
-    logStore.logDebug('System configuration loaded', {
+    logStore.logDebug('Configuración del sistema cargada', {
       runtime: 'Next.js',
       features: ['AI Chat', 'Event Logging'],
     });
 
     // Warning logs for potential issues
-    logStore.logWarning('Resource usage threshold approaching', {
+    logStore.logWarning('Se acerca el umbral de uso de recursos', {
       memoryUsage: '75%',
       cpuLoad: '60%',
     });
 
     // Error logs with detailed context
-    logStore.logError('API connection failed', new Error('Connection timeout'), {
+    logStore.logError('La conexión API falló', new Error('Tiempo de espera de conexión'), {
       endpoint: '/api/chat',
       retryCount: 3,
       lastAttempt: new Date().toISOString(),
@@ -68,9 +68,9 @@ export default function EventLogsTab() {
   }, [filteredLogs, autoScroll]);
 
   const handleClearLogs = useCallback(() => {
-    if (confirm('Are you sure you want to clear all logs?')) {
+    if (confirm('¿Estás seguro de que quieres borrar todos los registros?')) {
       logStore.clearLogs();
-      toast.success('Logs cleared successfully');
+      toast.success('Los registros se borraron correctamente');
       forceUpdate({}); // Force a re-render after clearing logs
     }
   }, []);
@@ -96,10 +96,10 @@ export default function EventLogsTab() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success('Logs exported successfully');
+      toast.success('Los registros se exportaron correctamente');
     } catch (error) {
-      toast.error('Failed to export logs');
-      console.error('Export error:', error);
+      toast.error('Error al exportar registros');
+      console.error('Error de exportación:', error);
     }
   }, []);
 
@@ -123,14 +123,14 @@ export default function EventLogsTab() {
       <div className="flex flex-col space-y-4 mb-4">
         {/* Title and Toggles Row */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary">Event Logs</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary">Registros de eventos</h3>
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Show Actions</span>
+              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Mostrar acciones</span>
               <Switch checked={showLogs} onCheckedChange={(checked) => logStore.showLogs.set(checked)} />
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Auto-scroll</span>
+              <span className="text-sm text-bolt-elements-textSecondary whitespace-nowrap">Desplazamiento automático</span>
               <Switch checked={autoScroll} onCheckedChange={setAutoScroll} />
             </div>
           </div>
@@ -143,16 +143,16 @@ export default function EventLogsTab() {
             onChange={(e) => setLogLevel(e.target.value as LogEntry['level'])}
             className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[20%] text-sm min-w-[100px]"
           >
-            <option value="all">All</option>
-            <option value="info">Info</option>
-            <option value="warning">Warning</option>
+            <option value="all">Todo</option>
+            <option value="info">Información</option>
+            <option value="warning">Advertencia</option>
             <option value="error">Error</option>
-            <option value="debug">Debug</option>
+            <option value="debug">Depurar</option>
           </select>
           <div className="flex-1 min-w-[200px]">
             <input
               type="text"
-              placeholder="Search logs..."
+              placeholder="Buscar registros..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white dark:bg-bolt-elements-background-depth-4 relative px-2 py-1.5 rounded-md focus:outline-none placeholder-bolt-elements-textTertiary text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary border border-bolt-elements-borderColor"
@@ -169,7 +169,7 @@ export default function EventLogsTab() {
                   'text-bolt-elements-button-primary-text',
                 )}
               >
-                Export Logs
+                Exportar registros
               </button>
               <button
                 onClick={handleClearLogs}
@@ -180,7 +180,7 @@ export default function EventLogsTab() {
                   'text-bolt-elements-button-danger-text',
                 )}
               >
-                Clear Logs
+                Borrar registros
               </button>
             </div>
           )}
@@ -189,7 +189,7 @@ export default function EventLogsTab() {
 
       <div className="bg-bolt-elements-bg-depth-1 rounded-lg p-4 h-[calc(100vh - 250px)] min-h-[400px] overflow-y-auto logs-container overflow-y-auto">
         {filteredLogs.length === 0 ? (
-          <div className="text-center text-bolt-elements-textSecondary py-8">No logs found</div>
+          <div className="text-center text-bolt-elements-textSecondary py-8">No se encontraron registros</div>
         ) : (
           filteredLogs.map((log, index) => (
             <div

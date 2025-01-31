@@ -1,25 +1,26 @@
+// Importaciones necesarias
 import { type ActionFunctionArgs } from '@remix-run/cloudflare';
-
-//import { StreamingTextResponse, parseStreamPart } from 'ai';
 import { streamText } from '~/lib/.server/llm/stream-text';
 import { stripIndents } from '~/utils/stripIndent';
 import type { IProviderSetting, ProviderInfo } from '~/types/model';
 
+// Función principal que se ejecuta al llamar a la acción
 export async function action(args: ActionFunctionArgs) {
   return enhancerAction(args);
 }
 
+// Función para analizar y decodificar cookies desde el encabezado HTTP
 function parseCookies(cookieHeader: string) {
   const cookies: any = {};
 
-  // Split the cookie string by semicolons and spaces
+  // Divide la cadena de cookies por punto y coma y espacios
   const items = cookieHeader.split(';').map((cookie) => cookie.trim());
 
   items.forEach((item) => {
     const [name, ...rest] = item.split('=');
 
     if (name && rest) {
-      // Decode the name and value, and join value parts in case it contains '='
+      // Decodifica el nombre y el valor; une las partes del valor en caso de que contenga '='
       const decodedName = decodeURIComponent(name.trim());
       const decodedValue = decodeURIComponent(rest.join('=').trim());
       cookies[decodedName] = decodedValue;
@@ -29,7 +30,9 @@ function parseCookies(cookieHeader: string) {
   return cookies;
 }
 
+// Función principal que maneja la lógica del realce de mensajes
 async function enhancerAction({ context, request }: ActionFunctionArgs) {
+  // Extrae los datos necesarios del cuerpo de la solicitud
   const { message, model, provider } = await request.json<{
     message: string;
     model: string;
@@ -39,24 +42,24 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
 
   const { name: providerName } = provider;
 
-  // validate 'model' and 'provider' fields
+  // Valida los campos 'model' y 'provider'
   if (!model || typeof model !== 'string') {
-    throw new Response('Invalid or missing model', {
+    throw new Response('Modelo inválido o ausente', {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: 'Solicitud incorrecta',
     });
   }
 
   if (!providerName || typeof providerName !== 'string') {
-    throw new Response('Invalid or missing provider', {
+    throw new Response('Proveedor inválido o ausente', {
       status: 400,
-      statusText: 'Bad Request',
+      statusText: 'Solicitud incorrecta',
     });
   }
 
   const cookieHeader = request.headers.get('Cookie');
 
-  // Parse the cookie's value (returns an object or null if no cookie exists)
+  // Analiza el valor de las cookies (devuelve un objeto o null si no existen cookies)
   const apiKeys = JSON.parse(parseCookies(cookieHeader || '').apiKeys || '{}');
   const providerSettings: Record<string, IProviderSetting> = JSON.parse(
     parseCookies(cookieHeader || '').providers || '{}',
@@ -68,30 +71,30 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
         {
           role: 'user',
           content:
-            `[Model: ${model}]\n\n[Provider: ${providerName}]\n\n` +
+            `[Modelo: ${model}]\n\n[Proveedor: ${providerName}]\n\n` +
             stripIndents`
-            You are a professional prompt engineer specializing in crafting precise, effective prompts.
-            Your task is to enhance prompts by making them more specific, actionable, and effective.
+            Eres un ingeniero de prompts profesional especializado en diseñar instrucciones precisas y efectivas.
+            Tu tarea es mejorar los prompts haciéndolos más específicos, claros y accionables.
 
-            I want you to improve the user prompt that is wrapped in \`<original_prompt>\` tags.
+            Quiero que mejores el prompt del usuario contenido entre las etiquetas \`<original_prompt>\`.
 
-            For valid prompts:
-            - Make instructions explicit and unambiguous
-            - Add relevant context and constraints
-            - Remove redundant information
-            - Maintain the core intent
-            - Ensure the prompt is self-contained
-            - Use professional language
+            Para prompts válidos:
+            - Haz que las instrucciones sean explícitas y claras
+            - Agrega contexto y restricciones relevantes
+            - Elimina información redundante
+            - Conserva la intención principal
+            - Asegúrate de que el prompt sea autónomo
+            - Usa un lenguaje profesional
 
-            For invalid or unclear prompts:
-            - Respond with clear, professional guidance
-            - Keep responses concise and actionable
-            - Maintain a helpful, constructive tone
-            - Focus on what the user should provide
-            - Use a standard template for consistency
+            Para prompts inválidos o poco claros:
+            - Proporciona orientación clara y profesional
+            - Sé conciso y accionable
+            - Mantén un tono constructivo y útil
+            - Enfócate en lo que el usuario debe proporcionar
+            - Usa una plantilla estándar para mantener consistencia
 
-            IMPORTANT: Your response must ONLY contain the enhanced prompt text.
-            Do not include any explanations, metadata, or wrapper tags.
+            IMPORTANTE: Tu respuesta debe contener SOLO el texto del prompt mejorado.
+            No incluyas explicaciones, metadatos o etiquetas de envoltura.
 
             <original_prompt>
               ${message}
@@ -113,16 +116,16 @@ async function enhancerAction({ context, request }: ActionFunctionArgs) {
   } catch (error: unknown) {
     console.log(error);
 
-    if (error instanceof Error && error.message?.includes('API key')) {
-      throw new Response('Invalid or missing API key', {
+    if (error instanceof Error && error.message?.includes('clave API')) {
+      throw new Response('Clave API inválida o ausente', {
         status: 401,
-        statusText: 'Unauthorized',
+        statusText: 'No autorizado',
       });
     }
 
     throw new Response(null, {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: 'Error interno del servidor',
     });
   }
 }

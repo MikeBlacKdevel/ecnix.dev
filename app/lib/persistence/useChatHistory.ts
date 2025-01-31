@@ -4,7 +4,7 @@ import { atom } from 'nanostores';
 import type { Message } from 'ai';
 import { toast } from 'react-toastify';
 import { workbenchStore } from '~/lib/stores/workbench';
-import { logStore } from '~/lib/stores/logs'; // Import logStore
+import { logStore } from '~/lib/stores/logs'; // Importar logStore
 import {
   getMessages,
   getNextId,
@@ -15,6 +15,7 @@ import {
   createChatFromMessages,
 } from './db';
 
+// Definición de la interfaz ChatHistoryItem
 export interface ChatHistoryItem {
   id: string;
   urlId?: string;
@@ -30,6 +31,7 @@ export const db = persistenceEnabled ? await openDatabase() : undefined;
 export const chatId = atom<string | undefined>(undefined);
 export const description = atom<string | undefined>(undefined);
 
+// Hook para gestionar el historial de chat
 export function useChatHistory() {
   const navigate = useNavigate();
   const { id: mixedId } = useLoaderData<{ id?: string }>();
@@ -44,9 +46,9 @@ export function useChatHistory() {
       setReady(true);
 
       if (persistenceEnabled) {
-        const error = new Error('Chat persistence is unavailable');
-        logStore.logError('Chat persistence initialization failed', error);
-        toast.error('Chat persistence is unavailable');
+        const error = new Error('La persistencia de chat no está disponible');
+        logStore.logError('Error al inicializar la persistencia del chat', error);
+        toast.error('La persistencia de chat no está disponible');
       }
 
       return;
@@ -72,7 +74,7 @@ export function useChatHistory() {
           setReady(true);
         })
         .catch((error) => {
-          logStore.logError('Failed to load chat messages', error);
+          logStore.logError('Error al cargar los mensajes del chat', error);
           toast.error(error.message);
         });
     }
@@ -119,9 +121,9 @@ export function useChatHistory() {
       try {
         const newId = await duplicateChat(db, mixedId || listItemId);
         navigate(`/chat/${newId}`);
-        toast.success('Chat duplicated successfully');
+        toast.success('Chat duplicado con éxito');
       } catch (error) {
-        toast.error('Failed to duplicate chat');
+        toast.error('Error al duplicar el chat');
         console.log(error);
       }
     },
@@ -133,12 +135,12 @@ export function useChatHistory() {
       try {
         const newId = await createChatFromMessages(db, description, messages);
         window.location.href = `/chat/${newId}`;
-        toast.success('Chat imported successfully');
+        toast.success('Chat importado con éxito');
       } catch (error) {
         if (error instanceof Error) {
-          toast.error('Failed to import chat: ' + error.message);
+          toast.error('Error al importar el chat: ' + error.message);
         } else {
-          toast.error('Failed to import chat');
+          toast.error('Error al importar el chat');
         }
       }
     },
@@ -169,7 +171,7 @@ export function useChatHistory() {
 
 function navigateChat(nextId: string) {
   /**
-   * FIXME: Using the intended navigate function causes a rerender for <Chat /> that breaks the app.
+   * FIXME: Usar la función `navigate` provoca un renderizado adicional para <Chat /> que rompe la aplicación.
    *
    * `navigate(`/chat/${nextId}`, { replace: true });`
    */

@@ -17,13 +17,13 @@ export class PromptLibrary {
     }
   > = {
     default: {
-      label: 'Default Prompt',
-      description: 'This is the battle tested default system Prompt',
+      label: 'Mensaje predeterminado',
+      description: 'Este es el mensaje predeterminado del sistema probado en batalla.',
       get: (options) => getSystemPrompt(options.cwd),
     },
     optimized: {
-      label: 'Optimized Prompt (experimental)',
-      description: 'an Experimental version of the prompt for lower token usage',
+      label: 'Aviso optimizado (experimental)',
+      description: 'Una versión experimental del mensaje para un uso menor del token',
       get: (options) => optimized(options),
     },
   };
@@ -41,7 +41,7 @@ export class PromptLibrary {
     const prompt = this.library[promptId];
 
     if (!prompt) {
-      throw 'Prompt Now Found';
+      throw 'Mensaje ahora encontrado';
     }
 
     return this.library[promptId]?.get(options);

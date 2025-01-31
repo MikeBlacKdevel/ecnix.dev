@@ -38,7 +38,7 @@ export default class GroqProvider extends BaseProvider {
     });
 
     if (!apiKey) {
-      throw new Error(`Missing API key for ${this.name} provider`);
+      throw new Error(`Falta la clave API para el ${this.name} proveedor`);
     }
 
     const openai = createOpenAI({

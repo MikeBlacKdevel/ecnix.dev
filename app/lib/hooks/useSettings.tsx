@@ -72,7 +72,7 @@ export function useSettings() {
           }
         });
       } catch (error) {
-        console.error('Failed to parse providers from cookies:', error);
+        console.error('No se pudieron analizar los proveedores a partir de las cookies:', error);
       }
     }
 

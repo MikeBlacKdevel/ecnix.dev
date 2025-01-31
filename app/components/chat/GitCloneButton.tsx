@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingOverlay } from '~/components/ui/LoadingOverlay';
 
+// Patrones de archivos a ignorar
 const IGNORE_PATTERNS = [
   'node_modules/**',
   '.git/**',
@@ -31,6 +32,7 @@ const IGNORE_PATTERNS = [
   '**/*lock.yaml',
 ];
 
+// Inicializamos el objeto 'ignore' con los patrones de archivos a ignorar
 const ig = ignore().add(IGNORE_PATTERNS);
 
 interface GitCloneButtonProps {
@@ -47,7 +49,8 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
       return;
     }
 
-    const repoUrl = prompt('Enter the Git url');
+    // Pedimos la URL del repositorio al usuario
+    const repoUrl = prompt('Ingresa la URL de Git');
 
     if (repoUrl) {
       setLoading(true);
@@ -56,6 +59,7 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
         const { workdir, data } = await gitClone(repoUrl);
 
         if (importChat) {
+          // Filtramos las rutas de archivos que no deben ser ignoradas
           const filePaths = Object.keys(data).filter((filePath) => !ig.ignores(filePath));
           console.log(filePaths);
 
@@ -77,8 +81,8 @@ export default function GitCloneButton({ importChat }: GitCloneButtonProps) {
 
           const filesMessage: Message = {
             role: 'assistant',
-            content: `Cloning the repo ${repoUrl} into ${workdir}
-<boltArtifact id="imported-files" title="Git Cloned Files" type="bundled">
+            content: `Clonando el repositorio ${repoUrl} en ${workdir}
+<boltArtifact id="imported-files" title="Archivos clonados de Git" type="bundled">
 ${fileContents
   .map(
     (file) =>
@@ -98,11 +102,12 @@ ${file.content}
             messages.push(commandsMessage);
           }
 
-          await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
+          // Importamos el chat con la descripción y los mensajes generados
+          await importChat(`Proyecto Git:${repoUrl.split('/').slice(-1)[0]}`, messages);
         }
       } catch (error) {
-        console.error('Error during import:', error);
-        toast.error('Failed to import repository');
+        console.error('Error durante la importación:', error);
+        toast.error('Error al importar el repositorio');
       } finally {
         setLoading(false);
       }
@@ -113,13 +118,13 @@ ${file.content}
     <>
       <button
         onClick={onClick}
-        title="Clone a Git Repo"
+        title="Clonar Repositorio Git"
         className="px-4 py-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary hover:bg-bolt-elements-background-depth-3 transition-all flex items-center gap-2"
       >
         <span className="i-ph:git-branch" />
-        Clone a Git Repo
+        Clonar Repositorio Git
       </button>
-      {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
+      {loading && <LoadingOverlay message="Por favor espere mientras clonamos el repositorio..." />}
     </>
   );
 }

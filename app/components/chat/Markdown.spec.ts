@@ -2,46 +2,52 @@ import { describe, expect, it } from 'vitest';
 import { stripCodeFenceFromArtifact } from './Markdown';
 
 describe('stripCodeFenceFromArtifact', () => {
-  it('should remove code fences around artifact element', () => {
+  it('debería eliminar los delimitadores de código alrededor del elemento de artefacto', () => {
     const input = "```xml\n<div class='__boltArtifact__'></div>\n```";
     const expected = "\n<div class='__boltArtifact__'></div>\n";
     expect(stripCodeFenceFromArtifact(input)).toBe(expected);
   });
 
-  it('should handle code fence with language specification', () => {
+  it('debería manejar delimitadores de código con especificación de lenguaje', () => {
     const input = "```typescript\n<div class='__boltArtifact__'></div>\n```";
     const expected = "\n<div class='__boltArtifact__'></div>\n";
     expect(stripCodeFenceFromArtifact(input)).toBe(expected);
   });
 
-  it('should not modify content without artifacts', () => {
-    const input = '```\nregular code block\n```';
+  it('no debería modificar contenido sin artefactos', () => {
+    const input = '```\nbloque de código regular\n```';
     expect(stripCodeFenceFromArtifact(input)).toBe(input);
   });
 
-  it('should handle empty input', () => {
+  it('debería manejar entradas vacías', () => {
     expect(stripCodeFenceFromArtifact('')).toBe('');
   });
 
-  it('should handle artifact without code fences', () => {
+  it('debería manejar artefactos sin delimitadores de código', () => {
     const input = "<div class='__boltArtifact__'></div>";
     expect(stripCodeFenceFromArtifact(input)).toBe(input);
   });
 
-  it('should handle multiple artifacts but only remove fences around them', () => {
+  it('debería manejar múltiples artefactos pero solo eliminar los delimitadores alrededor de ellos', () => {
     const input = [
-      'Some text',
+      'Algunos textos',
       '```typescript',
       "<div class='__boltArtifact__'></div>",
       '```',
       '```',
-      'regular code',
+      'Código regular',
       '```',
     ].join('\n');
 
-    const expected = ['Some text', '', "<div class='__boltArtifact__'></div>", '', '```', 'regular code', '```'].join(
-      '\n',
-    );
+    const expected = [
+      'Algunos textos',
+      '',
+      "<div class='__boltArtifact__'></div>",
+      '',
+      '```',
+      'Código regular',
+      '```',
+    ].join('\n');
 
     expect(stripCodeFenceFromArtifact(input)).toBe(expected);
   });

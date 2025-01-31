@@ -149,19 +149,19 @@ export const ChatImpl = memo(
       onError: (error) => {
         logger.error('Request failed\n\n', error);
         toast.error(
-          'There was an error processing your request: ' + (error.message ? error.message : 'No details were returned'),
+          'Se produjo un error al procesar su solicitud: ' + (error.message ? error.message : 'No se devolvieron detalles'),
         );
       },
       onFinish: (message, response) => {
         const usage = response.usage;
 
         if (usage) {
-          console.log('Token usage:', usage);
+          console.log('Uso de tokens:', usage);
 
           // You can now use the usage data as needed
         }
 
-        logger.debug('Finished streaming');
+        logger.debug('Transmisión terminada');
       },
       initialMessages,
       initialInput: Cookies.get(PROMPT_COOKIE_KEY) || '',
@@ -299,9 +299,9 @@ export const ChatImpl = memo(
         if (template !== 'blank') {
           const temResp = await getTemplates(template, title).catch((e) => {
             if (e.message.includes('rate limit')) {
-              toast.warning('Rate limit exceeded. Skipping starter template\n Continuing with blank template');
+              toast.warning('Se ha excedido el límite de velocidad. Omitiendo la plantilla de inicio\n Continuando con la plantilla en blanco');
             } else {
-              toast.warning('Failed to import starter template\n Continuing with blank template');
+              toast.warning('Error al importar la plantilla de inicio\n Continuando con la plantilla en blanco');
             }
 
             return null;

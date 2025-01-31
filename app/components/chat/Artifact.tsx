@@ -26,9 +26,9 @@ interface ArtifactProps {
 }
 
 export const Artifact = memo(({ messageId }: ArtifactProps) => {
-  const userToggledActions = useRef(false);
+  const userTouchedActions = useRef(false);
   const [showActions, setShowActions] = useState(false);
-  const [allActionFinished, setAllActionFinished] = useState(false);
+  const [allActionsFinished, setAllActionsFinished] = useState(false);
 
   const artifacts = useStore(workbenchStore.artifacts);
   const artifact = artifacts[messageId];
@@ -40,20 +40,20 @@ export const Artifact = memo(({ messageId }: ArtifactProps) => {
   );
 
   const toggleActions = () => {
-    userToggledActions.current = true;
+    userTouchedActions.current = true;
     setShowActions(!showActions);
   };
 
   useEffect(() => {
-    if (actions.length && !showActions && !userToggledActions.current) {
+    if (actions.length && !showActions && !userTouchedActions.current) {
       setShowActions(true);
     }
 
     if (actions.length !== 0 && artifact.type === 'bundled') {
       const finished = !actions.find((action) => action.status !== 'complete');
 
-      if (allActionFinished !== finished) {
-        setAllActionFinished(finished);
+      if (allActionsFinished !== finished) {
+        setAllActionsFinished(finished);
       }
     }
   }, [actions]);
@@ -71,7 +71,7 @@ export const Artifact = memo(({ messageId }: ArtifactProps) => {
           {artifact.type == 'bundled' && (
             <>
               <div className="p-4">
-                {allActionFinished ? (
+                {allActionsFinished ? (
                   <div className={'i-ph:files-light'} style={{ fontSize: '2rem' }}></div>
                 ) : (
                   <div className={'i-svg-spinners:90-ring-with-bg'} style={{ fontSize: '2rem' }}></div>
@@ -82,7 +82,7 @@ export const Artifact = memo(({ messageId }: ArtifactProps) => {
           )}
           <div className="px-5 p-3.5 w-full text-left">
             <div className="w-full text-bolt-elements-textPrimary font-medium leading-5 text-sm">{artifact?.title}</div>
-            <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">Click to open Workbench</div>
+            <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">Haga clic para abrir Workbench</div>
           </div>
         </button>
         <div className="bg-bolt-elements-artifacts-borderColor w-[1px]" />
@@ -199,7 +199,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                 </div>
                 {type === 'file' ? (
                   <div>
-                    Create{' '}
+                    Crear{' '}
                     <code
                       className="bg-bolt-elements-artifacts-inlineCode-background text-bolt-elements-artifacts-inlineCode-text px-1.5 py-1 rounded-md text-bolt-elements-item-contentAccent hover:underline cursor-pointer"
                       onClick={() => openArtifactInWorkbench(action.filePath)}
@@ -209,7 +209,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                   </div>
                 ) : type === 'shell' ? (
                   <div className="flex items-center w-full min-h-[28px]">
-                    <span className="flex-1">Run command</span>
+                    <span className="flex-1">Ejecutando comando</span>
                   </div>
                 ) : type === 'start' ? (
                   <a
@@ -219,7 +219,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                     }}
                     className="flex items-center w-full min-h-[28px]"
                   >
-                    <span className="flex-1">Start Application</span>
+                    <span className="flex-1">Iniciar solicitud</span>
                   </a>
                 ) : null}
               </div>

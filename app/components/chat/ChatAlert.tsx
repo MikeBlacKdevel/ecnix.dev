@@ -12,10 +12,10 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
   const { description, content, source } = alert;
 
   const isPreview = source === 'preview';
-  const title = isPreview ? 'Preview Error' : 'Terminal Error';
+  const title = isPreview ? 'Error de vista previa' : 'Error de terminal';
   const message = isPreview
-    ? 'We encountered an error while running the preview. Would you like Bolt to analyze and help resolve this issue?'
-    : 'We encountered an error while running terminal commands. Would you like Bolt to analyze and help resolve this issue?';
+    ? 'Hemos encontrado un error al ejecutar la vista previa. ¿Te gustaría que ecnix lo analizara y ayudara a resolver este problema?'
+    : 'Hemos encontrado un error al ejecutar comandos en el terminal. ¿Te gustaría que ecnix lo analizara y ayudara a resolver este problema?';
 
   return (
     <AnimatePresence>
@@ -27,7 +27,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
         className={`rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-background-depth-2 p-4`}
       >
         <div className="flex items-start">
-          {/* Icon */}
+          {/* Icono */}
           <motion.div
             className="flex-shrink-0"
             initial={{ scale: 0 }}
@@ -36,7 +36,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
           >
             <div className={`i-ph:warning-duotone text-xl text-bolt-elements-button-danger-text`}></div>
           </motion.div>
-          {/* Content */}
+          {/* Contenido */}
           <div className="ml-3 flex-1">
             <motion.h3
               initial={{ opacity: 0 }}
@@ -60,7 +60,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
               )}
             </motion.div>
 
-            {/* Actions */}
+            {/* Acciones */}
             <motion.div
               className="mt-4"
               initial={{ opacity: 0, y: 10 }}
@@ -71,7 +71,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                 <button
                   onClick={() =>
                     postMessage(
-                      `*Fix this ${isPreview ? 'preview' : 'terminal'} error* \n\`\`\`${isPreview ? 'js' : 'sh'}\n${content}\n\`\`\`\n`,
+                      `*Arreglar este error de ${isPreview ? 'vista previa' : 'terminal'}* \n\`\`\`${isPreview ? 'js' : 'sh'}\n${content}\n\`\`\`\n`,
                     )
                   }
                   className={classNames(
@@ -84,7 +84,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                   )}
                 >
                   <div className="i-ph:chat-circle-duotone"></div>
-                  Ask Bolt
+                  Preguntar a ecnix
                 </button>
                 <button
                   onClick={clearAlert}
@@ -96,7 +96,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                     'text-bolt-elements-button-secondary-text',
                   )}
                 >
-                  Dismiss
+                  Descartar
                 </button>
               </div>
             </motion.div>
